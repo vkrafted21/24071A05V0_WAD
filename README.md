@@ -11,7 +11,7 @@ experiment 1 and experiment 2.
 4. [x] Explore the features of ES6 like arrow functions, callbacks, promises, async/await.
 Implement an application for reading the weather information from openweathermap.org and display the information in the form of a graph on the
 web page.
-5. [ ] Develop a java standalone application that connects with the database (Oracle/ mySql) and perform the CRUD operation on the database tables.
+5. [x] Develop a java standalone application that connects with the database (Oracle/ mySql) and perform the CRUD operation on the database tables.
 6. [x] Create an xml for the bookstore. Validate the same using both DTD and XSD.
 7. [ ] Design a controller with servlet that provides the interaction with application developed in experiment 1 and the database created in experiment 5.
 8. [ ] Maintaining the transactional history of any user is very important. Explore the various session tracking mechanism (Cookies, HTTP Session)
