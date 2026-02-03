@@ -6,9 +6,9 @@
 <!-- If using XSD instead, comment the above line and use the schema below -->
 
 
-<!-- <bookstore 
+ <!-- <bookstore 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="bookstore.xsd"> -->
+    xsi:noNamespaceSchemaLocation="bookstore.xsd">  -->
 <bookstore>
     <book>
         <title>Clean Code</title>
