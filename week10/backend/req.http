@@ -1,0 +1,40 @@
+### Test server
+GET http://localhost:5001/
+
+###
+    
+### Get all students
+GET http://localhost:5001/api/students
+
+###
+
+### Get student by ID
+GET http://localhost:5001/api/students/1
+
+###
+
+### Create student
+POST http://localhost:5001/api/students
+Content-Type: application/json
+
+{
+  "name": "Aditya",
+  "age": 21,
+  "course": "IT"
+}
+
+###
+
+### Update student
+PUT http://localhost:5001/api/students/1
+Content-Type: application/json
+
+{
+  "name": "Vaishnavi",
+  "age": 22
+}
+
+###
+
+### Delete student
+DELETE http://localhost:5001/api/students/3
