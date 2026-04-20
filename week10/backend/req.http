@@ -1,21 +1,39 @@
 ### Test server
-GET http://localhost:5001/
-
-###
-    
-### Get all students
-GET http://localhost:5001/api/students
+GET http://localhost:5000/
 
 ###
 
-### Get student by ID
-GET http://localhost:5001/api/students/1
-
-###
-
-### Create student
-POST http://localhost:5001/api/students
+### Login (Get JWT Token)
+POST http://localhost:5000/auth/login
 Content-Type: application/json
+
+{
+  "username": "Sruthi"
+}
+
+###
+
+### Copy token from above response and paste below
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU3J1dGhpIiwiaWF0IjoxNzc2NzA2NDMyLCJleHAiOjE3NzY3MTAwMzJ9.H9ysg7Rg2gW05ZqkbEfCjlYRtGOAOT_s13R1VDYTk7k
+
+###
+
+### Get all students (Protected)
+GET http://localhost:5000/students
+Authorization: Bearer {{token}}
+
+###
+
+### Get student by ID (Protected)
+GET http://localhost:5000/students/1
+Authorization: Bearer {{token}}
+
+###
+
+### Create student (Protected)
+POST http://localhost:5000/students
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Aditya",
@@ -25,9 +43,10 @@ Content-Type: application/json
 
 ###
 
-### Update student
-PUT http://localhost:5001/api/students/1
+### Update student (Protected)
+PUT http://localhost:5000/students/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Vaishnavi",
@@ -36,5 +55,6 @@ Content-Type: application/json
 
 ###
 
-### Delete student
-DELETE http://localhost:5001/api/students/3
+### Delete student 
+DELETE http://localhost:5000/students/3
+Authorization: Bearer {{token}}
