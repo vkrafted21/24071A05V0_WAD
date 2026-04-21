@@ -1,12 +1,17 @@
-import React from 'react'
-import WeatherPage from './components/WeatherPage'
+import React from "react";
+import Navbar from "./components/Navbar";
+import WeatherPage from "./components/WeatherPage";
 
 function App() {
   return (
-    <div className='container'>
-      <WeatherPage />
-    </div>
-  )
+    <>
+      <Navbar />
+
+      <div className="container">
+        <WeatherPage />
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;
