@@ -1,4 +1,3 @@
-// WeatherPage.jsx
 import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import "./WeatherPage.css";
@@ -6,28 +5,7 @@ import "./WeatherPage.css";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import ForecastDay from "./ForecastDay";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-import { Line } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { AlertTriangle, Sparkles } from "lucide-react";
 
 function WeatherPage() {
   const [city, setCity] = useState("Hyderabad");
@@ -35,6 +13,14 @@ function WeatherPage() {
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [history, setHistory] = useState([
+    "Hyderabad",
+    "Mumbai",
+    "Delhi",
+    "Chennai",
+    "Bangalore",
+  ]);
 
   const apikey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
@@ -47,19 +33,31 @@ function WeatherPage() {
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`
       );
 
+      const currentData = await currentRes.json();
+
+      if (currentData.cod !== 200) {
+        setError("City not found. Please enter a valid city.");
+        setCurrentWeather(null);
+        setForecastData([]);
+        setIsLoading(false);
+        return;
+      }
+
       const forecastRes = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apikey}&units=metric`
       );
 
-      const currentData = await currentRes.json();
       const forecastList = await forecastRes.json();
 
       setCurrentWeather(currentData);
       setForecastData(forecastList);
+
+      if (!history.includes(city)) {
+        setHistory((prev) => [city, ...prev.slice(0, 4)]);
+      }
+
     } catch (err) {
-      setError("Failed to fetch weather data");
-      setCurrentWeather(null);
-      setForecastData([]);
+      setError("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
@@ -73,85 +71,40 @@ function WeatherPage() {
     setCity(newCity);
   };
 
-  // chart data
-const temps =
-  forecastData?.list?.slice(0, 8).map((item) => item.main.temp) || [];
-
-const getLineColor = (temp) => {
-  if (temp < 20) return "blue";
-  if (temp < 28) return "green";
-  if (temp < 34) return "orange";
-  return "red";
-};
-
-const avgTemp =
-  temps.reduce((sum, val) => sum + val, 0) / temps.length;
-
-const chartData = {
-  labels:
-    forecastData?.list?.slice(0, 8).map((item) =>
-      item.dt_txt.split(" ")[1].slice(0, 5)
-    ) || [],
-
-  datasets: [
-    {
-      label: "Temperature °C",
-      data: temps,
-      borderColor: getLineColor(avgTemp),
-      backgroundColor: getLineColor(avgTemp),
-      tension: 0.4,
-      borderWidth: 3,
-      pointRadius: 5,
-      fill: false,
-    },
-  ],
-};
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-      },
-      title: {
-        display: true,
-        text: `Temperature Forecast - ${city}`,
-      },
-    },
-  };
-
   return (
     <div className="container py-4">
+
+      {/* search */}
       <SearchBar onSearch={handleSearch} />
 
+      {/* loading */}
       {isLoading && (
         <div className="text-center mt-4">
           <div className="spinner-border text-primary"></div>
         </div>
       )}
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      {/* error */}
+      {error && (
+        <div className="alert alert-danger d-flex align-items-center justify-content-center gap-2 mt-3">
+          <AlertTriangle size={20} />
+          <span>{error}</span>
+        </div>
+      )}
 
+      {/* current weather */}
       {currentWeather && (
         <div className="row justify-content-center mt-4">
-          <div className="col-md-6">
+          <div className="col-md-8">
             <CurrentWeatherCard data={currentWeather} />
           </div>
         </div>
       )}
 
-      {/* chart */}
-      {forecastData?.list?.length > 0 && (
-        <div className="row justify-content-center mt-5">
-            <div className="col-md-10">
-                <div className="bg-white p-4 rounded shadow">
-                <Line data={chartData} options={chartOptions} />
-                </div>
-            </div>
-        </div>
-      )}
-
-      {/* forecast cards */}
+        <h4 className="text-center fw-bold mt-5 mb-4">
+        Upcoming Forecast
+        </h4>
+      {/* forecast */}
       {forecastData?.list?.length > 0 && (
         <div className="row justify-content-center mt-4">
           {forecastData.list.slice(0, 10).map((forecastObj, index) => (
@@ -161,6 +114,25 @@ const chartData = {
           ))}
         </div>
       )}
+
+      {/* suggestions at bottom */}
+      <div className="text-center mt-5">
+        <h5 className="fw-bold mb-3 d-flex justify-content-center align-items-center gap-2">
+          <Sparkles size={18} />
+          Suggestions
+        </h5>
+
+        {history.map((item, index) => (
+          <button
+            key={index}
+            className="btn btn-outline-primary btn-sm m-1"
+            onClick={() => setCity(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
     </div>
   );
 }

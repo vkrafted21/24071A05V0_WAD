@@ -1,34 +1,36 @@
 import React from "react";
+import "./ForecastDay.css";
 
 function ForecastDay({ data }) {
   return (
-    <div className="border p-3 m-2 bg-light text-center rounded shadow-sm">
+    <div className="forecast-card text-center">
 
-      {/* weather icon */}
+      {/* icon */}
       <img
         src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
         alt="weather icon"
       />
 
-      {/* weather condition below icon */}
-      <span className="d-block text-muted small mb-2">
+      {/* condition */}
+      <p className="text-muted mb-1">
         {data.weather[0].main}
-      </span>
+      </p>
 
       {/* time */}
-      <h6 className="fw-bold text-primary">
+      <h5 className="fw-bold text-primary">
         {data.dt_txt.split(" ")[1].slice(0, 5)}
-      </h6>
+      </h5>
 
-      {/* min temp */}
-      <p className="mb-1">
-        <strong>Min:</strong> {data.main.temp_min}°C
-      </p>
+      {/* hidden details */}
+      <div className="forecast-details">
+        <p className="mb-1">
+          <strong>Min:</strong> {data.main.temp_min}°C
+        </p>
 
-      {/* max temp */}
-      <p className="mb-1">
-        <strong>Max:</strong> {data.main.temp_max}°C
-      </p>
+        <p className="mb-0">
+          <strong>Max:</strong> {data.main.temp_max}°C
+        </p>
+      </div>
 
     </div>
   );

@@ -1,0 +1,29 @@
+.forecast-card {
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 210px;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); */
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.forecast-card:hover {
+  min-height: 270px;
+  transform: translateY(-4px);
+  /* box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08); */
+}
+
+.forecast-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.7s ease;
+}
+
+.forecast-card:hover .forecast-details {
+  max-height: 80px;
+  opacity: 1;
+  margin-top: 10px;
+}
